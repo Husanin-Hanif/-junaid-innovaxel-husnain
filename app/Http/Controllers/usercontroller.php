@@ -96,5 +96,16 @@ public function listreservation()
         'reservations' => $reservations
     ]);
 }
+public function cancelReservation($id)
+{
+    $reservation = reservation::find($id);
+
+    if (!$reservation) {
+        return response()->json(['message' => 'Reservation not found'], 404);
+    }
+
+    $reservation->delete();
+    return response()->json(['message' => 'Reservation canceled successfully']);
+}
 
 }
