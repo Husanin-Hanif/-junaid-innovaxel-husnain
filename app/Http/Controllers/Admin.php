@@ -27,6 +27,11 @@ class Admin extends Controller
         $movie->delete();
         return response()->json(['message' => 'Movie deleted successfully']);
     }
+    public function createShowtime(Request $request)
+    {
+        $showtime = Showtime::create($request->only(['movie_id', 'date', 'time', 'capacity']));
+        return response()->json(['message' => 'Showtime created successfully', 'showtime' => $showtime], 201);
+    }
 
 
 
