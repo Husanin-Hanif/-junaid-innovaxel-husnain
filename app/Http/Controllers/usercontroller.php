@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Log;
 
 class usercontroller extends Controller
 {
+    public function listOfMovieShowtime($date)
+{
+    $movie = DB::table('movie')
+        ->join('showtime', 'movie.id', '=', 'showtime.movie_id')
+        ->where('showtime.date', $date)
+        ->select(
+            'movie.id as movie_id',
+            'movie.title as Movie_Title',
+            'movie.description as Description',
+            'showtime.id as ShowID',
+            'showtime.firsttime as Time1',
+            'showtime.secondtime as Time2',
+            'showtime.capacity as Capacity',
+            'showtime.price as Price'
+        )
+        ->get();
+
+    return response()->json(['movies' => $movie]);
+}
 
 
 }
