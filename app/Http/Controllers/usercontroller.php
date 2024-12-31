@@ -66,6 +66,35 @@ public function reserveSeats(Request $request){
     }
 
 }
+public function listreservation()
+{
+    $userid = Auth::id();
 
+    $reservations = DB::table('reservation')
+        ->join('showtime', 'reservation.showtime_id', '=', 'showtime.id')
+        ->join('movie', 'showtime.movie_id', '=', 'movie.id')
+        ->where('reservation.user_id', $userid)
+        ->where('showtime.firsttime', '>=', now()->format('h:i:s'))
+         ->where('showtime.secondtime','<=',now()->format('h:i:s'))
+        ->orderBy('showtime.firsttime', 'asc')
+        ->select(
+            'reservation.id as reservation_id',
+            'reservation.seats',
+            'showtime.firsttime',
+            'showtime.secondtime',
+            'movie.title as movie_title',
+            'movie.description as movie_description'
+        )
+        ->get();
+
+    if ($reservations->isEmpty()) {
+        return response()->json(['message' => 'No reservation Found']);
+    }
+
+    return response()->json([
+        'message' => 'Reservation found',
+        'reservations' => $reservations
+    ]);
+}
 
 }
