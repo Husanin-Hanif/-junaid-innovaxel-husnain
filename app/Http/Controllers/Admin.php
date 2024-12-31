@@ -44,11 +44,11 @@ class Admin extends Controller
             return \response()->json(['message'=>'movie not update']);
 
         }
-        //   $request->validate([
-        //     'title'=> 'required|string|max:200',
-        //     'description' =>'nullable|string',
-        //     'genre'=>'required|string|max:100',
-        // ]);
+          $request->validate([
+            'title'=> 'required|string|max:200',
+            'description' =>'nullable|string',
+            'genre'=>'required|string|max:100',
+        ]);
         $editmovie->update($request->all());
         return \response()->json(['message'=>'movie successfully update','editmovie' => $editmovie]);
 
