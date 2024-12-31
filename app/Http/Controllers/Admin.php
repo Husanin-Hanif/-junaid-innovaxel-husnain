@@ -9,6 +9,12 @@ use App\Models\User;
 
 class Admin extends Controller
 {
+    public function createMovie(Request $request)
+    {
+        $movie = Movie::create($request->only(['title', 'description', 'genre']));
+        return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
+    }
+
 
 
 }
