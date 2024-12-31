@@ -28,7 +28,7 @@ route::get('getmovie/{id}',[Admin::class,'getmovie']);
 route::put('editmovie/{id}',[Admin::class,'updatemovie']);
 route::delete('deletemovie/{id}',[Admin::class,'deletemovie']);
 route::get('showtime',[Admin::class,'index']);
-route::post('createshow',[Admin::class,'showcreate']);
+route::post('createshowtime',[Admin::class,'showcreate']);
 route::put('updateshow/{id}',[Admin::class,'updateshowtime']);
 route::delete('deleteshow/{id}',[Admin::class,'deleteshowtime']);
 route::put('promoteUser/{id}',[Admin::class,'promoteUser']);
