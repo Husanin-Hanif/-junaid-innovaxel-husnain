@@ -33,6 +33,39 @@ class usercontroller extends Controller
 
     return response()->json(['movies' => $movie]);
 }
+public function reserveSeats(Request $request){
+    try{
+        $request->validate([
+            'showtime_id' =>'required|exists:showtime,id',
+            'seats' =>'required|array|min:1',
+            'seats.*' => 'string',
+        ]);
+        // $showtime=Showtime::find($request->showtime_id);
+
+        $lockedSeats = Cache::get("lock:seats:{$request->showtime_id}", []);
+        if (count(array_intersect($lockedSeats, $request->seats)) > 0) {
+            return response()->json([
+                'message' => 'Some seats are temporarily locked. Please try again.',
+            ]);
+        }
+           Cache::put("lock:seats:{$request->showtime_id}", array_merge($lockedSeats, $request->seats), now()->addMinutes(1));
+        $reservation=reservation::create([
+            'user_id' => Auth::id(),
+            'showtime_id' => $request->showtime_id,
+            'seats' => $request->seats,
+        ]);
+        return \response()->json(['Seats create Succssfully','reservation'=>$reservation]);
+    }
+    catch (\Exception $e) {
+
+        Log::error("Error reserving seats: " . $e->getMessage());
+        return response()->json([
+            'message' => 'An error occurred while reserving seats.',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+
+}
 
 
 }
