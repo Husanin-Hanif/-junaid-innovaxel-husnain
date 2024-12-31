@@ -9,22 +9,39 @@ use App\Models\User;
 
 class Admin extends Controller
 {
-    public function createmovie( Request $request){
+    public function createMovie(Request $request)
+{
+    try {
 
         $request->validate([
-            'title'=> 'required|string|max:200',
-            'description' =>'nullable|string',
-            'genre'=>'required|string|max:100',
+            'title' => 'required|string|max:200',
+            'description' => 'nullable|string',
+            'genre' => 'required|string|max:100',
         ]);
-        $movie=movie::create($request->all());
 
 
-       if($movie){
-        return \response()->json(['message'=>'Movie Create Successfully','movie'=> $movie]);
-       }
-       return response()->json(['message'=>'Movie Not Create Successfully']);
+        $movie = Movie::create($request->all());
 
+
+        if ($movie) {
+            return response()->json([
+                'message' => 'Movie created successfully',
+                'movie' => $movie
+            ]);
+        }
+
+
+        return response()->json([
+            'message' => 'Movie creation failed'
+        ], 400);
+    } catch (\Exception $e) {
+
+        return response()->json([
+            'message' => 'An error occurred: ' . $e->getMessage()
+        ]);
     }
+}
+
 
 
     public function getmovie($id){
