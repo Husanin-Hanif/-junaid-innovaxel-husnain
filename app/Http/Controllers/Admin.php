@@ -14,6 +14,19 @@ class Admin extends Controller
         $movie = Movie::create($request->only(['title', 'description', 'genre']));
         return response()->json(['message' => 'Movie created successfully', 'movie' => $movie], 201);
     }
+    public function updateMovie(Request $request, $id)
+    {
+        $movie = Movie::findOrFail($id);
+        $movie->update($request->only(['title', 'description', 'genre']));
+        return response()->json(['message' => 'Movie updated successfully', 'movie' => $movie]);
+    }
+
+    public function deleteMovie($id)
+    {
+        $movie = Movie::findOrFail($id);
+        $movie->delete();
+        return response()->json(['message' => 'Movie deleted successfully']);
+    }
 
 
 
